@@ -1,3 +1,25 @@
-.main-page__h1 {
+
+/* Global */
+.all-pages__section {
+    width: 60%;
+    margin: 60px auto;
+}
+.button {
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px 10px;
+    color: white;
+    background-color: purple;
+    margin-bottom: 10px;
+}
+.button:hover {
+    background-color: violet;
+}
+
+/* Main Page */
+.main-page__section {
     text-align: center;
+}
+.main-page__h1 {
 }
