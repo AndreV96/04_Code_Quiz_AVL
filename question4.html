@@ -8,25 +8,27 @@
     <title>Code Quiz</title>
 </head>
 <body>
-    <section class="question4__section all-pages__section">
+    <section class="question4__section all-pages__section all-questions__sections">
         <h1 class="question4__h1">String values must be enclosed within ____ when being assigned to variables.</h1>
         <ul>
             <li>
-                <button class="button">Commas</button>
+                <button class="button" data-answer="false">Commas</button>
             </li>
             <li>
-                <button class="button">Curly Brackets</button>
+                <button class="button" data-answer="false">Curly Brackets</button>
             </li>
             <li>
-                <button class="button">Quotes</button>
+                <button class="button" data-answer="true">Quotes</button>
             </li>
             <li>
-                <button class="button">Parenthesis</button>
+                <button class="button" data-answer="false">Parenthesis</button>
             </li>
         </ul>   
         <a class="button" href="question5.html">Next</a>
     </section>
     <a class="highscores-time__e highscores__a" href="highscores.html">Highscores</a>
+    <p class="highscores-time__e score__p">Score:</p>
+    <p class="highscores-time__e score__span">0</p>
     <p class="highscores-time__e time__p">Time: <span class="time__span">0</span></p>
     <script src="src/script.js"></script>
 </body>
