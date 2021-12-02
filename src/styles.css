@@ -20,7 +20,9 @@
 .display-none {
     display: none;
 }
-
+.text-align-center {
+    text-align: center;
+}
 /* Specific */
 .highscores-time__e {
     position: absolute;
@@ -49,7 +51,10 @@
 .time__span {
     color: black;
 }
-
+.answer-message {
+    color: cadetblue;
+    font-style: italic;
+}
 /* Main Page */
 .start-quiz__section {
     text-align: center;

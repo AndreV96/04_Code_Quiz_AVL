@@ -2,9 +2,13 @@
 var score = 0;
 var time = 76;
 var questionNumber;
+var timeout
+
+var body = document.body;
 
 var startQuizSection = document.querySelector(".start-quiz__section")
 var questionSection = document.querySelector(".question__section")
+var gameOverSection = document.querySelector(".game-over__section")
 
 var questionH1 = document.querySelector(".question__h1")
 var possibleAnswer1 = document.getElementById("possible-answer1")
@@ -17,6 +21,35 @@ var scoreValue = document.querySelector(".score__span")
 var timeP = document.querySelector(".time__p")
 var timeValue = document.querySelector(".time__span")
 
+//Wrong and Correct Messages Elements
+
+var correctMessageEl = document.createElement("p")
+var wrondMessageEl = document.createElement("p")
+
+correctMessageEl.innerHTML = "Correct!"
+wrondMessageEl.innerHTML = "Wrong!"
+correctMessageEl.classList.add("answer-message")
+wrondMessageEl.classList.add("answer-message")
+
+//Game Over Screen Elements
+// var gameOverSectionEl = document.createElement("section")
+var gameOverH1El = document.createElement("h1")
+var gameOverPEl = document.createElement("p")
+var gameOverLabelEl = document.createElement("label")
+var gameOverInputEl = document.createElement("input")
+var gameOverButtonEl = document.createElement("button")
+
+// gameOverSectionEl.classList.add("game-over__section")
+gameOverH1El.setAttribute("style", "font-weight: bold")
+gameOverH1El.innerHTML= "All done!"
+gameOverLabelEl.innerHTML = "Enter initials:"
+gameOverLabelEl.setAttribute("for", "text")
+gameOverInputEl.setAttribute("type", "text")
+gameOverInputEl.setAttribute("id", "initialsInput")
+gameOverButtonEl.classList.add("button")
+gameOverButtonEl.innerHTML = "Submit"
+
+console.log(gameOverSection)
 var questions = ["Commonly used data types DO NOT include:", "The condition of an if/else statement is enclosed within ____.", "Arrays in Javascript can be used to store ____.", "String values must be enclosed within ____ when being assigned to variables.", "A very useful tool used during development and debugging for printing content to be debugged is:" ] 
 var answers1 = [
     {
@@ -137,20 +170,6 @@ function addGlobalEventListener(type, selector, callback) {
         if( e.target.matches(selector)) callback(e)
     })
 }
-function loadNextQuestion() {
-    console.log( questionNumber)
-    if (questionNumber < 4) {
-        questionNumber += 1
-        questionH1.innerHTML = questionsAnswersArray[questionNumber].question
-        for (i = 0; i < 4; i++) {
-            possibleAnswersDomEArray[i].innerHTML = questionsAnswersArray[questionNumber].answers[i].text
-            possibleAnswersDomEArray[i].dataset.answer = questionsAnswersArray[questionNumber].answers[i].answer
-        }
-    }
-    // if (questionNumber === 4) {
-        
-    // }
-}
 //Main functions
 function startQuiz() {
     startQuizSection.classList.add("display-none");
@@ -165,12 +184,39 @@ function startQuiz() {
 function timer() {
     time = time -1;
     timeValue.innerHTML = time;
-    setTimeout(timer, 1000);
+    timeout = setTimeout(timer, 1000);
+    if (time < 1) {
+        timeValue.style.color = "red"
+        finishQuiz()
+    }
 }
-
-// function noTimeLeft() {
-
-// } 
+function loadNextQuestion() {  
+    if (questionNumber === 4) {
+        finishQuiz()
+        return
+    }
+    questionNumber += 1
+    questionH1.innerHTML = questionsAnswersArray[questionNumber].question
+    for (i = 0; i < 4; i++) {
+        possibleAnswersDomEArray[i].innerHTML = questionsAnswersArray[questionNumber].answers[i].text
+        possibleAnswersDomEArray[i].dataset.answer = questionsAnswersArray[questionNumber].answers[i].answer
+    }  
+}
+function finishQuiz () {
+    questionSection.remove()
+    clearTimeout(timeout)
+    if (time < 0) timeValue.innerHTML = 0
+    addScoreScreen()
+}
+function addScoreScreen () {
+    gameOverPEl.innerHTML = `Your final score is: ${score}`
+    gameOverSection.appendChild(gameOverH1El)
+    gameOverSection.appendChild(gameOverPEl)
+    gameOverSection.appendChild(gameOverLabelEl)
+    gameOverSection.appendChild(gameOverInputEl)
+    gameOverSection.appendChild(gameOverButtonEl)
+    console.log(score)
+}
 // Event Listeners
 addGlobalEventListener("click","button", e => {
     var eClass = e.target.getAttribute("class")
@@ -185,12 +231,19 @@ addGlobalEventListener("click","button", e => {
         score += 20
         scoreValue.innerHTML = score
         loadNextQuestion();
+        // body.appendChild(correctMessageEl)
         console.log("correcto!")
+        return
+    }
+    if (eDataAnswer === "false" && time < 16) {
+        time = 0
+        // body.appendChild(wrondMessageEl)
         return
     }
     if (eDataAnswer === "false") {
         time -= 15
         loadNextQuestion();
+        // body.appendChild(wrondMessageEl)
         console.log("incorrecto!")
         return
     }
