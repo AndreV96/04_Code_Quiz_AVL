@@ -17,6 +17,11 @@
 .button:hover {
     background-color: violet;
 }
+.display-none {
+    display: none;
+}
+
+/* Specific */
 .highscores-time__e {
     position: absolute;
     top: 0;
@@ -46,8 +51,6 @@
 }
 
 /* Main Page */
-.main-page__section {
+.start-quiz__section {
     text-align: center;
-}
-.main-page__h1 {
 }
