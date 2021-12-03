@@ -23,6 +23,9 @@
 .text-align-center {
     text-align: center;
 }
+.margin-right {
+    margin-right: 20px;
+}
 /* Specific */
 .highscores-time__e {
     position: absolute;
@@ -59,3 +62,4 @@
 .start-quiz__section {
     text-align: center;
 }
+/* Score Screen */

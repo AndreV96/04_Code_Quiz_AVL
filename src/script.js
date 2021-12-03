@@ -21,6 +21,7 @@ var scoreValue = document.querySelector(".score__span")
 var timeP = document.querySelector(".time__p")
 var timeValue = document.querySelector(".time__span")
 
+
 //Wrong and Correct Messages Elements
 
 var correctMessageEl = document.createElement("p")
@@ -31,8 +32,10 @@ wrondMessageEl.innerHTML = "Wrong!"
 correctMessageEl.classList.add("answer-message")
 wrondMessageEl.classList.add("answer-message")
 
-//Game Over Screen Elements
-// var gameOverSectionEl = document.createElement("section")
+//Highscores
+
+var highscoresArray = []
+
 var gameOverH1El = document.createElement("h1")
 var gameOverPEl = document.createElement("p")
 var gameOverLabelEl = document.createElement("label")
@@ -42,14 +45,18 @@ var gameOverButtonEl = document.createElement("button")
 // gameOverSectionEl.classList.add("game-over__section")
 gameOverH1El.setAttribute("style", "font-weight: bold")
 gameOverH1El.innerHTML= "All done!"
-gameOverLabelEl.innerHTML = "Enter initials:"
+gameOverLabelEl.innerHTML = "Enter your initials:"
 gameOverLabelEl.setAttribute("for", "text")
+gameOverLabelEl.classList.add("margin-right")
 gameOverInputEl.setAttribute("type", "text")
 gameOverInputEl.setAttribute("id", "initialsInput")
+gameOverInputEl.classList.add("game-over__input")
+gameOverInputEl.classList.add("margin-right")
 gameOverButtonEl.classList.add("button")
+gameOverButtonEl.classList.add("button--submit-HS")
+// gameOverButtonEl.setAttribute("href", "highscores.html")
 gameOverButtonEl.innerHTML = "Submit"
 
-console.log(gameOverSection)
 var questions = ["Commonly used data types DO NOT include:", "The condition of an if/else statement is enclosed within ____.", "Arrays in Javascript can be used to store ____.", "String values must be enclosed within ____ when being assigned to variables.", "A very useful tool used during development and debugging for printing content to be debugged is:" ] 
 var answers1 = [
     {
@@ -215,7 +222,50 @@ function addScoreScreen () {
     gameOverSection.appendChild(gameOverLabelEl)
     gameOverSection.appendChild(gameOverInputEl)
     gameOverSection.appendChild(gameOverButtonEl)
-    console.log(score)
+}
+// Highscore Fucntions
+function init() {   
+    var storedHighscores = JSON.parse(localStorage.getItem("HighScores"))
+    if (storedHighscores !== null) {
+        highscoresArray = storedHighscores
+    }
+    console.log(highscoresArray)
+}
+function submitHighscore() {
+    var userInputHS = document.querySelector(".game-over__input")
+    var userInputHSValue = userInputHS.value.trim();
+    var userScoreHS = score
+    var userObjectHS = new Object()
+    userObjectHS.user = userInputHSValue 
+    userObjectHS.score = userScoreHS
+    highscoresArray.push(userObjectHS)
+    userInputHS.value = ""
+    storeHS()
+    goToHighscoresPage();
+    console.log(highscoresArray )
+}
+function storeHS() {
+    localStorage.setItem("HighScores", JSON.stringify(highscoresArray))
+}
+function goToHighscoresPage() {
+    
+    window.location.href = "highscores.html"
+    renderHighscores()
+
+}
+function renderHighscores() {
+    var highscoreUl = document.querySelector(".highscores__ul--list")
+    // highscoreUl.innerHTML = "";
+    console.log(highscoreUl)
+    for (i = 0; i < highscoresArray.length; i++) {
+        var userText = highscoresArray[i].user
+        var userHighscore = highscoresArray[i].score
+        var highscoreNumber = i + 1
+        var highscoreLiEl = document.createElement("li")
+        highscoreLiEl.textContent = `${highscoreNumber}. ${userText} - ${userHighscore} `
+        // highscoreUl.append(highscoreLiEl)
+        console.log(`${highscoreNumber}. ${userText} - ${userHighscore} `)
+    }
 }
 // Event Listeners
 addGlobalEventListener("click","button", e => {
@@ -224,27 +274,37 @@ addGlobalEventListener("click","button", e => {
     e.stopPropagation()
     if (eClass.includes("start-quiz__button") === true) {
         startQuiz()
-        console.log("inicio quiz")
         return
     }
     if (eDataAnswer === "true") {
         score += 20
         scoreValue.innerHTML = score
-        loadNextQuestion();
-        // body.appendChild(correctMessageEl)
-        console.log("correcto!")
+        loadNextQuestion()
         return
     }
     if (eDataAnswer === "false" && time < 16) {
         time = 0
-        // body.appendChild(wrondMessageEl)
         return
     }
     if (eDataAnswer === "false") {
         time -= 15
-        loadNextQuestion();
-        // body.appendChild(wrondMessageEl)
-        console.log("incorrecto!")
+        loadNextQuestion()
+        return
+    }
+    if (eClass.includes("button--submit-HS") === true) {
+        submitHighscore()
         return
     }
 } );
+
+addGlobalEventListener("click","a", e => {
+    var eClass = e.target.getAttribute("class")
+    e.stopPropagation()
+    if (eClass.includes("clear-HS") === true ) {
+        console.log(highscoresArray)
+        console.log("hi")
+        return
+    }
+});
+
+init()
