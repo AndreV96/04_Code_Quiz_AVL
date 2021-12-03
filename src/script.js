@@ -209,6 +209,20 @@ function loadNextQuestion() {
         possibleAnswersDomEArray[i].dataset.answer = questionsAnswersArray[questionNumber].answers[i].answer
     }  
 }
+function displayCorrectMessage() {
+    questionSection.appendChild(correctMessageEl)
+    setTimeout(function() {
+        correctMessageEl.remove()
+      }, 1000);
+}
+function displayinCorrectMessage() {
+    questionSection.appendChild(wrondMessageEl)
+    setTimeout(function() {
+        wrondMessageEl.remove()
+      }, 1000);
+    timeout = setTimeout(timer, 1000);
+}
+
 function finishQuiz () {
     questionSection.remove()
     clearTimeout(timeout)
@@ -229,7 +243,6 @@ function init() {
     if (storedHighscores !== null) {
         highscoresArray = storedHighscores
     }
-    console.log(highscoresArray)
 }
 function submitHighscore() {
     var userInputHS = document.querySelector(".game-over__input")
@@ -242,7 +255,6 @@ function submitHighscore() {
     userInputHS.value = ""
     storeHS()
     goToHighscoresPage();
-    console.log(highscoresArray )
 }
 function storeHS() {
     localStorage.setItem("HighScores", JSON.stringify(highscoresArray))
@@ -250,22 +262,7 @@ function storeHS() {
 function goToHighscoresPage() {
     
     window.location.href = "highscores.html"
-    renderHighscores()
 
-}
-function renderHighscores() {
-    var highscoreUl = document.querySelector(".highscores__ul--list")
-    // highscoreUl.innerHTML = "";
-    console.log(highscoreUl)
-    for (i = 0; i < highscoresArray.length; i++) {
-        var userText = highscoresArray[i].user
-        var userHighscore = highscoresArray[i].score
-        var highscoreNumber = i + 1
-        var highscoreLiEl = document.createElement("li")
-        highscoreLiEl.textContent = `${highscoreNumber}. ${userText} - ${userHighscore} `
-        // highscoreUl.append(highscoreLiEl)
-        console.log(`${highscoreNumber}. ${userText} - ${userHighscore} `)
-    }
 }
 // Event Listeners
 addGlobalEventListener("click","button", e => {
@@ -279,16 +276,19 @@ addGlobalEventListener("click","button", e => {
     if (eDataAnswer === "true") {
         score += 20
         scoreValue.innerHTML = score
+        displayCorrectMessage()
         loadNextQuestion()
         return
     }
     if (eDataAnswer === "false" && time < 16) {
         time = 0
+        displayinCorrectMessage()
         return
     }
     if (eDataAnswer === "false") {
         time -= 15
         loadNextQuestion()
+        displayinCorrectMessage()
         return
     }
     if (eClass.includes("button--submit-HS") === true) {
@@ -296,15 +296,5 @@ addGlobalEventListener("click","button", e => {
         return
     }
 } );
-
-addGlobalEventListener("click","a", e => {
-    var eClass = e.target.getAttribute("class")
-    e.stopPropagation()
-    if (eClass.includes("clear-HS") === true ) {
-        console.log(highscoresArray)
-        console.log("hi")
-        return
-    }
-});
 
 init()
