@@ -1,6 +1,6 @@
 Quiz Me
 
-Webpage Deployed link: https://andrev96.github.io/04_Code_Quiz_AVL/
+Webpage Deployed link: https://andrev96.github.io/Quiz_Me/
 
 GitHub Repository Link: https://github.com/AndreV96/Quiz_Me
 
