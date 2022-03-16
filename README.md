@@ -1,4 +1,4 @@
-Module 4
+Quiz Me
 
 Webpage Deployed link: https://andrev96.github.io/04_Code_Quiz_AVL/
 
